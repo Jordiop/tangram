@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 var grid [][]int = [][]int{
@@ -37,10 +38,51 @@ func fitSquares(grid [][]int) [][][]int {
 	return squareList
 }
 
+func fitBars(grid [][]int) [][][]int {
+	rows := len(grid)
+	cols := len(grid[0])
+	verticalBarList := [][][]int{}
+	horizontalBarList := [][][]int{}
+
+	for r := 0; r < rows-1; r++ {
+		for c := 0; c < cols; c++ {
+			if grid[r][c] != 0 && grid[r+1][c] != 0 {
+				h := make([][]int, rows)
+				for i := range h {
+					h[i] = make([]int, cols)
+				}
+				h[r][c] = 1
+				h[r+1][c] = 1
+				verticalBarList = append(verticalBarList, h)
+			}
+		}
+	}
+
+	for r := 0; r < rows; r++ {
+		for c := 0; c < cols-1; c++ {
+			if grid[r][c] != 0 && grid[r][c+1] != 0 {
+				h := make([][]int, rows)
+				for i := range h {
+					h[i] = make([]int, cols)
+				}
+				h[r][c] = 1
+				h[r][c+1] = 1
+				horizontalBarList = append(horizontalBarList, h)
+			}
+		}
+	}
+
+	return append(verticalBarList, horizontalBarList...)
+}
+
 func main() {
-	fmt.Println("Hello, World!")
+	// calculate the execution time
+	start := time.Now()
 	squares := fitSquares(grid)
+	bars := fitBars(grid)
 	fmt.Println(squares)
+	fmt.Println(bars)
+	fmt.Println("Execution time: ", time.Since(start))
 }
 
 // The Python code is the original code that needs to be adapted to GO.
