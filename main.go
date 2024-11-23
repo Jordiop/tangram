@@ -8,7 +8,7 @@ import (
 )
 
 var grid [][]int = [][]int{
-	{1, 1, 1, 1, 1, 1},
+	{1, 1, 1, 0, 1, 1},
 	{1, 1, 1, 1, 1, 1},
 	{1, 1, 1, 1, 1, 1},
 	{1, 1, 1, 1, 1, 1},
@@ -41,38 +41,32 @@ func fitSquares(grid [][]int) [][][]int {
 func fitBars(grid [][]int) [][][]int {
 	rows := len(grid)
 	cols := len(grid[0])
-	verticalBarList := [][][]int{}
-	horizontalBarList := [][][]int{}
+	barList := [][][]int{}
 
-	for r := 0; r < rows-1; r++ {
+	for r := 0; r < rows; r++ {
 		for c := 0; c < cols; c++ {
-			if grid[r][c] != 0 && grid[r+1][c] != 0 {
+			if r < rows-1 && grid[r][c] != 0 && grid[r+1][c] != 0 {
 				h := make([][]int, rows)
 				for i := range h {
 					h[i] = make([]int, cols)
 				}
 				h[r][c] = 1
 				h[r+1][c] = 1
-				verticalBarList = append(verticalBarList, h)
+				barList = append(barList, h)
 			}
-		}
-	}
-
-	for r := 0; r < rows; r++ {
-		for c := 0; c < cols-1; c++ {
-			if grid[r][c] != 0 && grid[r][c+1] != 0 {
+			if c < cols-1 && grid[r][c] != 0 && grid[r][c+1] != 0 {
 				h := make([][]int, rows)
 				for i := range h {
 					h[i] = make([]int, cols)
 				}
 				h[r][c] = 1
 				h[r][c+1] = 1
-				horizontalBarList = append(horizontalBarList, h)
+				barList = append(barList, h)
 			}
 		}
 	}
 
-	return append(verticalBarList, horizontalBarList...)
+	return barList
 }
 
 func main() {
